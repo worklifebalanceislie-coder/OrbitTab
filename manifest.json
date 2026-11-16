@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "OrbitTab",
+  "version": "1.1",
+  "description": "Новая вкладка с часами, выбором поисковика из Firefox, настройкой фона и цветными плитками",
+  "permissions": ["storage", "search"],
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  }
+}

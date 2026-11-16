@@ -1,0 +1,808 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  color: #ffffff;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background 0.3s ease;
+  overflow-x: hidden;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Кнопка настроек — сплошная полупрозрачная шестерёнка без круга */
+.icon-btn {
+  position: fixed;
+  top: 22px;
+  right: 22px;
+  z-index: 10;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  color: rgba(255, 255, 255, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  outline: none;
+  transition: color 0.2s ease, transform 0.3s ease;
+}
+
+.icon-btn:hover {
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.9);
+  transform: rotate(45deg);
+}
+
+
+
+.container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 960px;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Часы */
+.clock-wrapper {
+  text-align: center;
+  margin-bottom: 26px;
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+#clock {
+  font-size: 4.5rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+
+#date {
+  font-size: 1.1rem;
+  opacity: 0.85;
+  margin-top: 8px;
+  text-transform: capitalize;
+}
+
+/* Поиск */
+.search-form {
+  position: relative;
+  width: 100%;
+  max-width: 620px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 30px;
+  padding: 6px 8px 6px 10px;
+  margin-bottom: 40px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  z-index: 15;
+}
+
+.engine-selector {
+  position: relative;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.engine-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.28);
+  border: none;
+  border-radius: 20px;
+  padding: 6px 10px;
+  cursor: pointer;
+  color: #fff;
+  transition: background 0.2s;
+}
+
+.engine-btn:hover {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.engine-btn img {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: contain;
+  background: #fff;
+  padding: 2px;
+}
+
+.engine-btn .arrow {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.engine-dropdown {
+  position: absolute;
+  top: 48px;
+  left: 0;
+  min-width: 190px;
+  background: #23222b;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  padding: 6px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 99;
+}
+
+.engine-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s;
+}
+
+.engine-item:hover,
+.engine-item.active {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.engine-item img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  padding: 2px;
+  object-fit: contain;
+}
+
+.search-form input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 1rem;
+  outline: none;
+  min-width: 0;
+}
+
+.search-form input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.search-submit {
+  background: rgba(255, 255, 255, 0.25);
+  border: none;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 22px;
+  cursor: pointer;
+  font-weight: 600;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.search-submit:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* --- КОНТЕЙНЕР СЕТКИ --- */
+.grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.grid-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Базовая плитка */
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, filter 0.22s ease;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.tile:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.42);
+  z-index: 6;
+}
+
+/* 1. СЕТКА КВАДРАТОВ */
+.grid.shape-square {
+  gap: 20px;
+}
+
+.grid.shape-square .grid-row {
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.grid.shape-square .tile {
+  width: 118px;
+  height: 118px;
+  border-radius: 18px;
+  padding: 12px;
+}
+
+/* 2. ОРБИТАЛЬНАЯ СИСТЕМА ДЛЯ КРУГОВ */
+.orbit-scene {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px auto;
+}
+
+.orbit-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 0 25px rgba(255, 255, 255, 0.03);
+  pointer-events: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Главная планета/звезда в центре */
+.orbit-scene .tile.orbit-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  padding: 14px;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 32px rgba(255, 255, 255, 0.25), 0 8px 25px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  z-index: 4;
+}
+
+.orbit-scene .tile.orbit-center:hover {
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+/* Планеты на орбитах */
+.orbit-scene .tile.orbit-planet {
+  position: absolute;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  padding: 10px;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  z-index: 3;
+}
+
+.orbit-scene .tile.orbit-planet:hover {
+  transform: translate(-50%, -50%) scale(1.14);
+  box-shadow: 0 0 22px rgba(255, 255, 255, 0.35), 0 10px 25px rgba(0, 0, 0, 0.45);
+  z-index: 8;
+}
+
+.orbit-scene .tile.orbit-planet img,
+.orbit-scene .tile.orbit-planet .tile-letter {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 5px;
+  font-size: 1rem;
+}
+
+.orbit-scene .tile.orbit-planet .tile-title {
+  font-size: 0.74rem;
+}
+
+.orbit-scene .tile .delete-btn {
+  top: 8px;
+  right: 12px;
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+}
+
+.orbit-scene .tile.orbit-planet .add-plus {
+  font-size: 1.4rem;
+  margin-bottom: 2px;
+}
+
+.orbit-scene .tile.orbit-planet .add-text {
+  font-size: 0.7rem;
+}
+
+/* 3. ПЧЕЛИНЫЕ СОТЫ ДЛЯ ШЕСТИГРАННИКОВ */
+.grid.shape-hex .grid-row {
+  gap: 10px;
+}
+
+.grid.shape-hex .grid-row + .grid-row {
+  margin-top: -28px;
+}
+
+.grid.shape-hex .tile {
+  width: 122px;
+  height: 138px;
+  border-radius: 0;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  padding: 22px 12px;
+  box-shadow: none;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
+}
+
+.grid.shape-hex .tile:hover {
+  transform: scale(1.06);
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.45));
+}
+
+.grid.shape-hex .add-tile {
+  border: none;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.grid.shape-hex .delete-btn {
+  top: 24px;
+  right: 14px;
+}
+
+/* Содержимое плиток */
+.tile img {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+}
+
+.tile-letter {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.22);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.tile-title {
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-align: center;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+
+.delete-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  border: none;
+  font-size: 12px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s, background 0.2s;
+  z-index: 2;
+}
+
+.tile:hover .delete-btn {
+  opacity: 1;
+}
+
+.delete-btn:hover {
+  background: #e74c3c;
+}
+
+/* Кнопка добавления новой плитки */
+.add-tile {
+  background: rgba(255, 255, 255, 0.14);
+  border: 2px dashed rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  color: #ffffff;
+}
+
+.add-tile:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #ffffff;
+}
+
+.add-plus {
+  font-size: 1.8rem;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.add-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Панель настроек */
+.panel {
+  position: fixed;
+  top: 74px;
+  right: 20px;
+  z-index: 20;
+  width: 270px;
+  background: #23222b;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.shape-options {
+  display: flex;
+  gap: 10px;
+}
+
+.shape-btn {
+  flex: 1;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid transparent;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.shape-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.shape-btn.active {
+  background: rgba(88, 101, 242, 0.35);
+  border-color: #5865f2;
+}
+
+.presets {
+  display: flex;
+  gap: 10px;
+}
+
+.preset {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 2px solid #fff;
+  cursor: pointer;
+}
+
+/* Модальное окно */
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  justify-content: center;
+align-items: center;
+}
+.modal-content {
+background: #23222b;
+border: 1px solid rgba(255, 255, 255, 0.15);
+padding: 24px;
+border-radius: 16px;
+width: 320px;
+display: flex;
+flex-direction: column;
+gap: 12px;
+box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+}
+.modal-content input {
+padding: 10px;
+border-radius: 8px;
+border: 1px solid #444;
+background: #18171d;
+color: #fff;
+}
+.modal-actions {
+display: flex;
+gap: 10px;
+margin-top: 8px;
+}
+.btn-primary, .btn-secondary {
+flex: 1;
+padding: 10px;
+border: none;
+border-radius: 8px;
+cursor: pointer;
+font-weight: 600;
+}
+.btn-primary { background: #5865f2; color: #fff; }
+.btn-secondary { background: #3b3a45; color: #fff; }
+.hidden { display: none !important; }
+
+/* --- 4. 3D ОРБИТАЛЬНАЯ СИСТЕМА --- */
+.orbit3d-scene {
+  position: relative;
+  width: 100%;
+  height: 440px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  perspective: 1100px;
+  margin-top: -10px;
+}
+
+.orbit3d-space {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+
+.orbit3d-plane {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.orbit3d-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.08), inset 0 0 18px rgba(255, 255, 255, 0.05);
+}
+
+.orbit3d-billboard {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-style: preserve-3d;
+  pointer-events: auto;
+}
+
+/* Эффект объёмной 3D-сферы (блик + тень) */
+.sphere-3d {
+  border-radius: 50% !important;
+  box-shadow:
+    inset -10px -10px 22px rgba(0, 0, 0, 0.55),
+    inset 6px 6px 14px rgba(255, 255, 255, 0.35),
+    0 10px 25px rgba(0, 0, 0, 0.45) !important;
+}
+
+.orbit3d-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 116px;
+  height: 116px;
+  padding: 14px;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  box-shadow:
+    inset -10px -10px 22px rgba(0, 0, 0, 0.45),
+    inset 6px 6px 16px rgba(255, 255, 255, 0.45),
+    0 0 40px rgba(255, 255, 255, 0.3) !important;
+}
+
+.orbit3d-center:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+.orbit3d-planet {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 8px;
+  transition: box-shadow 0.2s ease;
+}
+
+.orbit3d-planet:hover {
+  box-shadow:
+    inset -8px -8px 18px rgba(0, 0, 0, 0.45),
+    inset 5px 5px 12px rgba(255, 255, 255, 0.5),
+    0 0 28px rgba(255, 255, 255, 0.55) !important;
+}
+
+.orbit3d-planet img,
+.orbit3d-planet .tile-letter {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 4px;
+  font-size: 0.95rem;
+}
+
+.orbit3d-planet .tile-title {
+  font-size: 0.72rem;
+}
+
+.orbit3d-planet .delete-btn,
+.orbit3d-center .delete-btn {
+  top: 6px;
+  right: 10px;
+  width: 19px;
+  height: 19px;
+  font-size: 10px;
+}
+
+.orbit3d-planet .add-plus {
+  font-size: 1.3rem;
+  margin-bottom: 1px;
+}
+
+.orbit3d-planet .add-text {
+  font-size: 0.65rem;
+}
+/* --- ЖИВОЕ АНИМИРОВАННОЕ ПЕРЕТАСКИВАНИЕ В 2D-РЕЖИМАХ --- */
+.tile.live-dragging {
+  position: fixed !important;
+  z-index: 9999 !important;
+  pointer-events: none !important;
+  margin: 0 !important;
+  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.55) !important;
+  transition: transform 0.12s ease-out !important;
+  cursor: grabbing;
+}
+
+/* Сохраняем точную форму перетаскиваемой плитки */
+.tile.live-dragging.clone-square {
+  border-radius: 18px !important;
+}
+
+.tile.live-dragging.clone-circle {
+  border-radius: 50% !important;
+}
+
+.tile.live-dragging.clone-hex {
+  border-radius: 0 !important;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%) !important;
+  box-shadow: none !important;
+  filter: drop-shadow(0 16px 24px rgba(0, 0, 0, 0.6)) !important;
+}
+
+.tile.live-placeholder {
+  opacity: 0.22 !important;
+  transform: scale(0.92) !important;
+  filter: grayscale(0.5);
+  pointer-events: none;
+}
+
+/* --- ГРАВИТАЦИОННОЕ ПЕРЕТАСКИВАНИЕ В 3D-РЕЖИМЕ --- */
+.orbit-tether-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 25;
+}
+
+.orbit-tether-line {
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 2;
+  stroke-dasharray: 6 6;
+  animation: tetherFlow 0.8s linear infinite;
+}
+
+@keyframes tetherFlow {
+  to {
+    stroke-dashoffset: -12;
+  }
+}
+
+.orbit-slot-ghost {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px dashed rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.08);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 5;
+  animation: ghostPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes ghostPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.6; }
+  50% { transform: translate(-50%, -50%) scale(1.06); opacity: 1; }
+}
+
+.tile.orbit-dragging {
+  z-index: 100 !important;
+  cursor: grabbing !important;
+  box-shadow:
+    inset -8px -8px 18px rgba(0, 0, 0, 0.4),
+    inset 5px 5px 14px rgba(255, 255, 255, 0.65),
+    0 0 38px rgba(255, 255, 255, 0.75) !important;
+  transition: none !important;
+}
+
+.tile.gravity-target {
+  box-shadow:
+    inset -8px -8px 18px rgba(0, 0, 0, 0.4),
+    inset 5px 5px 14px rgba(255, 255, 255, 0.65),
+    0 0 0 5px rgba(255, 255, 255, 0.45),
+    0 0 35px rgba(120, 180, 255, 0.85) !important;
+}
+
+
+
+/* Запрет выделения текста на плитках и во время перетаскивания */
+.grid,
+.tile {
+  user-select: none;
+  -moz-user-select: none;
+}
+
+body.is-dragging,
+body.is-dragging * {
+  user-select: none !important;
+  -moz-user-select: none !important;
+  cursor: grabbing !important;
+}

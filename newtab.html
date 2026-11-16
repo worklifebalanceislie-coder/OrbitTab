@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Новая вкладка</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="overlay"></div>
+
+  <!-- Кнопка настроек в правом верхнем углу -->
+  <button id="settings-btn" class="icon-btn" title="Настройки" aria-label="Настройки" style="background: none; border: none; box-shadow: none;">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+    </svg>
+  </button>
+
+
+
+  <main class="container">
+    <!-- Часы -->
+    <div class="clock-wrapper">
+      <div id="clock">00:00</div>
+      <div id="date">Загрузка даты...</div>
+    </div>
+
+    <!-- Поиск с выбором логотипа поисковика из Firefox -->
+    <form id="search-form" class="search-form">
+      <div class="engine-selector" id="engine-selector">
+        <button type="button" id="engine-btn" class="engine-btn" title="Выбрать поисковую систему">
+          <img id="current-engine-icon" src="" alt="Поиск">
+          <span class="arrow">▾</span>
+        </button>
+        <div id="engine-dropdown" class="engine-dropdown hidden"></div>
+      </div>
+
+      <input type="text" id="search-input" placeholder="Поиск в интернете..." autocomplete="off" autofocus>
+      <button type="submit" class="search-submit">Найти</button>
+    </form>
+
+    <!-- Сетка закладок -->
+    <div class="grid" id="bookmarks-grid"></div>
+  </main>
+
+  <!-- Панель настроек -->
+  <div id="settings-panel" class="panel hidden">
+    <h3>Настройки</h3>
+
+    <label>Форма плиток:</label>
+    <div class="shape-options">
+      <button type="button" class="shape-btn active" data-shape="square" title="Квадрат">■</button>
+      <button type="button" class="shape-btn" data-shape="circle" title="Круг (2D орбиты)">●</button>
+      <button type="button" class="shape-btn" data-shape="orbit3d" title="3D Космос">🪐</button>
+      <button type="button" class="shape-btn" data-shape="hex" title="Шестиугольник">⬡</button>
+    </div>
+
+
+    <hr class="divider">
+
+    <label>Готовые темы фона:</label>
+    <div class="presets">
+      <button class="preset" data-bg="linear-gradient(135deg, #1a1a2e, #16213e)" style="background: linear-gradient(135deg, #1a1a2e, #16213e);"></button>
+      <button class="preset" data-bg="linear-gradient(135deg, #2b1055, #7597de)" style="background: linear-gradient(135deg, #2b1055, #7597de);"></button>
+      <button class="preset" data-bg="linear-gradient(135deg, #134e5e, #71b280)" style="background: linear-gradient(135deg, #134e5e, #71b280);"></button>
+      <button class="preset" data-bg="linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b)" style="background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);"></button>
+    </div>
+
+    <label for="bg-color">Или свой цвет:</label>
+    <input type="color" id="bg-color" value="#1c1b22">
+
+    <label for="bg-file">Загрузить картинку с ПК:</label>
+    <input type="file" id="bg-file" accept="image/*">
+
+    <button id="close-settings" class="btn-secondary">Закрыть</button>
+  </div>
+
+  <!-- Модальное окно добавления закладки -->
+  <div id="add-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Добавить сайт</h3>
+      <input type="text" id="site-title" placeholder="Название (например, YouTube)">
+      <input type="text" id="site-url" placeholder="Ссылка (например, youtube.com)">
+      <div class="modal-actions">
+        <button id="save-site" class="btn-primary">Сохранить</button>
+        <button id="cancel-site" class="btn-secondary">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="orbit3d.js"></script>
+  <script src="newtab.js"></script>
+</body>
+</html>
+
